@@ -17,8 +17,8 @@ Adds some useful type reflection macros
     #[setters]
     struct User {
         id: u32,
-        name: String
-        // pub field are ignored by default
+        name: String,
+        // pub fields are ignored by default
         pub phone_number: u64,
     }
     ```
@@ -54,8 +54,8 @@ Adds some useful type reflection macros
     #[setters(includes = [name])]
     struct User {
         id: u32,
-        name: String
-        // pub field are ignored by default
+        name: String,
+        // pub fields are ignored by default
         pub phone_number: u64,
     }
     ```
@@ -82,8 +82,8 @@ Adds some useful type reflection macros
     #[setters(excludes = [name])]
     struct User {
         id: u32,
-        name: String
-        // pub field are ignored by default
+        name: String,
+        // pub fields are ignored by default
         pub phone_number: u64,
     }
     ```
@@ -109,8 +109,8 @@ Adds some useful type reflection macros
     #[setters(prefix=example_set_)]
     struct User {
         id: u32,
-        name: String
-        // pub field are ignored by default
+        name: String,
+        // pub fields are ignored by default
         pub phone_number: u64,
     }
     ```
@@ -144,7 +144,7 @@ Adds some useful type reflection macros
     #[setters(include_pub)]
     struct User {
         id: u32,
-        name: String
+        name: String,
         pub phone_number: u64,
     }
     ```
@@ -180,13 +180,13 @@ Adds some useful type reflection macros
         }
     }
     ```
-- `borrow` - Generates getters that borrows `self`. For setters, this parameter is ignored
+- `borrow` - Generates getters that borrow `self`. For setters, this parameter is ignored
     ```rust
     #[getters(borrow)]
     struct User {
         id: u32,
-        name: String
-        // pub field are ignored by default
+        name: String,
+        // pub fields are ignored by default
         pub phone_number: u64,
     }
     ```
@@ -204,13 +204,13 @@ Adds some useful type reflection macros
         }
     }
     ```
-- `mut_ref` - Generates getters that provides `self` as `&mut self` instead of `&self`. For setters, this parameter is ignored
+- `mut_ref` - Generates getters that provide `self` as `&mut self` instead of `&self`. For setters, this parameter is ignored
     ```rust
     #[getters(mut_ref)]
     struct User {
         id: u32,
-        name: String
-        // pub field are ignored by default
+        name: String,
+        // pub fields are ignored by default
         pub phone_number: u64,
     }
     ```
