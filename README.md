@@ -10,7 +10,7 @@ Adds some useful type reflection macros
 
 ## Parameters
 
-- No parameters - Generates getters/setters for any private field, pub field are ignored
+- No parameters - Generates getters/setters for any private field, pub fields are ignored
 
     ```rust
     #[getters]
