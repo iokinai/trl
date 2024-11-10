@@ -1,0 +1,2 @@
+[workspace]
+members = ["trl-getters", "trl-global", "trl-setters"]
