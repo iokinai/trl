@@ -32,31 +32,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "trl-getters"
-version = "0.1.0"
+name = "trl"
+version = "1.0.0"
 dependencies = [
  "proc-macro2",
  "quote",
  "syn",
- "trl-global",
-]
-
-[[package]]
-name = "trl-global"
-version = "0.1.0"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
-name = "trl-setters"
-version = "0.1.0"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
- "trl-global",
 ]
 
 [[package]]
