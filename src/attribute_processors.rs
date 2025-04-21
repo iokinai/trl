@@ -1,17 +1,18 @@
+//! # attributes_processor
+//! This module contains functions that generate method from the provided information
+
 use proc_macro2::TokenStream;
 use quote::format_ident;
 use syn::{Field, ItemStruct};
 
 use crate::{
     field_attrs::FieldAttrs,
-    helpers::{
-        fill_includes_if_empty, generate_getter, gernerate_setter, modifier_to_token_stream,
-        should_field_be_added,
-    },
+    helpers::{fill_includes_if_empty, generate_getter, generate_setter, should_field_be_added},
     struct_attrs::StructAttrs,
 };
 
-pub(crate) fn process_getters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStream {
+/// Generates `getters` `TokenStream` based on the provided `StructAttrs`
+pub fn process_getters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStream {
     fill_includes_if_empty(&mut attrs.includes, &input.fields);
 
     let mut result = TokenStream::new();
@@ -27,7 +28,8 @@ pub(crate) fn process_getters(mut attrs: StructAttrs, input: &ItemStruct) -> Tok
     result
 }
 
-pub(crate) fn process_setters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStream {
+/// Generates `setters` `TokenStream` based on the provided `StructAttrs`
+pub fn process_setters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStream {
     fill_includes_if_empty(&mut attrs.includes, &input.fields);
 
     if attrs.prefix.is_empty() {
@@ -47,7 +49,8 @@ pub(crate) fn process_setters(mut attrs: StructAttrs, input: &ItemStruct) -> Tok
     result
 }
 
-pub(crate) fn process_get(attrs: FieldAttrs, field: &Field) -> TokenStream {
+/// Generates `get` `TokenStream` based on the provided `FieldAttrs`
+pub fn process_get(attrs: FieldAttrs, field: &Field) -> TokenStream {
     let fin = &field.ident.clone().unwrap();
     let ty = &field.ty;
 
@@ -61,12 +64,13 @@ pub(crate) fn process_get(attrs: FieldAttrs, field: &Field) -> TokenStream {
         getter_name = format_ident!("{}{}", attrs.prefix, getter_name);
     }
 
-    let modifier = modifier_to_token_stream(&attrs.modifier);
+    let modifier = &attrs.modifier.into();
 
     generate_getter(&getter_name, &modifier, &fin, ty)
 }
 
-pub(crate) fn process_set(mut attrs: FieldAttrs, field: &Field) -> TokenStream {
+/// Generates `set` `TokenStream` based on the provided `FieldAttrs`
+pub fn process_set(mut attrs: FieldAttrs, field: &Field) -> TokenStream {
     let fin = &field.ident.clone().unwrap();
     let ty = &field.ty;
 
@@ -82,5 +86,5 @@ pub(crate) fn process_set(mut attrs: FieldAttrs, field: &Field) -> TokenStream {
 
     setter_name = format_ident!("{}{}", attrs.prefix, setter_name);
 
-    gernerate_setter(&setter_name, fin, ty)
+    generate_setter(&setter_name, fin, ty)
 }

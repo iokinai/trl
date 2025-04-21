@@ -145,11 +145,11 @@ Adds some useful type reflection macros
         }
     }
     ```
-- `include_pub` - Generates getters/setter for `pub` fields too
+- `pub` - Generates getters/setter for `pub` fields too
     ```rust
     #[derive(trl)]
-    #[getters(include_pub)]
-    #[setters(include_pub)]
+    #[getters(pub)]
+    #[setters(pub)]
     struct User {
         id: u32,
         name: String,
@@ -186,10 +186,10 @@ Adds some useful type reflection macros
         }
     }
     ```
-- `borrow` - Generates getters that borrow `self`. For setters, this parameter is ignored
+- `move` - Generates getters that moves `self`. For setters, this parameter is ignored
     ```rust
     #[derive(trl)]
-    #[getters(borrow)]
+    #[getters(move)]
     struct User {
         id: u32,
         name: String,
@@ -211,10 +211,10 @@ Adds some useful type reflection macros
         }
     }
     ```
-- `mut_ref` - Generates getters that provide `self` as `&mut self` instead of `&self`. For setters, this parameter is ignored
+- `mut ref` - Generates getters that provide `self` as `&mut self` instead of `&self`. For setters, this parameter is ignored
     ```rust
     #[derive(trl)]
-    #[getters(mut_ref)]
+    #[getters(mut ref)]
     struct User {
         id: u32,
         name: String,
@@ -329,13 +329,13 @@ Adds some useful type reflection macros
 
     Note: if you specify both `name` and `prefix` the prefix will be added to the specified name
 
-- `borrow` - Generates getter that borrows `self`. For setters, this parameter is ignored:
+- `move` - Generates getter that moves `self`. For setters, this parameter is ignored:
     ```rust
     #[derive(trl)]
     struct User {
         id: u32,
 
-        #[get(borrow)]
+        #[get(move)]
         name: String,
 
         pub phone_number: u64,
@@ -352,13 +352,13 @@ Adds some useful type reflection macros
     }
     ```
 
-- `mut_ref` - Generates getter that provide `self` as `&mut self` instead of `&self`. For setters, this parameter is ignored:
+- `mut ref` - Generates getter that provide `self` as `&mut self` instead of `&self`. For setters, this parameter is ignored:
     ```rust
     #[derive(trl)]
     struct User {
         id: u32,
 
-        #[get(mut_ref)]
+        #[get(mut ref)]
         name: String,
 
         pub phone_number: u64,
@@ -386,7 +386,7 @@ Adds some useful type reflection macros
     }
 
     impl User {
-        pub(crate) fn id(&self) -> &u32 {
+        pub fn id(&self) -> &u32 {
             &self.id
         }
     }

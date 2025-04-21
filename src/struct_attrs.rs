@@ -1,21 +1,31 @@
-use syn::{punctuated::Punctuated, Meta, Token};
+//! # struct_attrs
+//!
+//! This module contains the `StructAttrs` struct which represents struct-level attribute info
 
+use syn::{punctuated::Punctuated, Token};
+
+use crate::arg::Arg;
 use crate::field_attrs::FieldAttrs;
-use crate::helpers::{parse_expr_array, parse_expr_str};
 use crate::modifier::Modifier;
 use crate::new_from_args::NewFromArgs;
 
+/// Represents a struct-level attribute info
 #[derive(Debug, Clone)]
 pub struct StructAttrs {
+    /// Fields to include
     pub includes: Vec<String>,
+    /// Fields to exclude
     pub excludes: Vec<String>,
+    /// Prefix
     pub prefix: String,
+    /// `self` modifier
     pub modifier: Modifier,
+    /// Whether to include public fields or not
     pub include_pub: bool,
 }
 
 impl NewFromArgs for StructAttrs {
-    fn new(punctuated: Punctuated<Meta, Token![,]>) -> StructAttrs {
+    fn new(punctuated: Punctuated<Arg, Token![,]>) -> StructAttrs {
         let mut includes = Vec::new();
         let mut excludes = Vec::new();
         let mut prefix = String::new();
@@ -24,18 +34,11 @@ impl NewFromArgs for StructAttrs {
 
         for value in punctuated {
             match value {
-                Meta::NameValue(nv) => match nv.path.get_ident().unwrap().to_string().as_str() {
-                    "includes" => parse_expr_array(&nv.value, &mut includes),
-                    "excludes" => parse_expr_array(&nv.value, &mut excludes),
-                    "prefix" => parse_expr_str(&nv.value, &mut prefix),
-                    _ => {}
-                },
-                Meta::Path(p) => match p.get_ident().unwrap().to_string().as_str() {
-                    "borrow" => modifier = Modifier::Borrow,
-                    "mut_ref" => modifier = Modifier::MutRef,
-                    "include_pub" => include_pub = true,
-                    _ => {}
-                },
+                Arg::Includes(i) => includes = i,
+                Arg::Excludes(e) => excludes = e,
+                Arg::Prefix(p) => prefix = p,
+                Arg::Modifier(m) => modifier = m,
+                Arg::Pub => include_pub = true,
                 _ => {}
             };
         }

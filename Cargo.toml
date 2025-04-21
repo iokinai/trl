@@ -1,10 +1,20 @@
 [package]
 name = "trl"
 version = "1.0.0"
-edition = "2021"
+edition = "2024"
+authors = ["Maxim Okinawa <okinaijap@gmail.com>"]
+description = "This library provides auto generation of some common methods based on Rust macros"
+license = "MIT"
+repository = "github.com/iokinai/trl"
+homepage = "github.com/iokinai/trl"
+documentation = "https://docs.rs/trl"
+readme = "README.md"
+
+keywords = ["macro", "attribute", "codegen"]
+categories = ["development-tools::procedural-macro-helpers"]
 
 [lib]
-proc_macro = true
+proc-macro = true
 
 [dependencies]
 proc-macro2 = "1.0.89"
