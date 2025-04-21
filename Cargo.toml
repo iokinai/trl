@@ -5,8 +5,8 @@ edition = "2024"
 authors = ["Maxim Okinawa <okinaijap@gmail.com>"]
 description = "This library provides auto generation of some common methods based on Rust macros"
 license = "MIT"
-repository = "github.com/iokinai/trl"
-homepage = "github.com/iokinai/trl"
+repository = "https://github.com/iokinai/trl"
+homepage = "https://github.com/iokinai/trl"
 documentation = "https://docs.rs/trl"
 readme = "README.md"
 
