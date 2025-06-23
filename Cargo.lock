@@ -35,12 +35,23 @@ dependencies = [
 name = "trl"
 version = "1.1.0"
 dependencies = [
- "trl_codegen",
+ "trl_codegen 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "trl_codegen"
 version = "1.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "trl_codegen"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8a89ca4816c8e267ee329213a5a009103601611e95e609f1949c6079c9eb9957"
 dependencies = [
  "proc-macro2",
  "quote",
