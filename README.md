@@ -12,6 +12,8 @@ Adds some useful type reflection macros
 
 `#[setters(...)]` - Adds setter methods to a struct
 
+`#[constructor(...)]` - Adds default constructor
+
 ### Field-level macros
 
 `#[get(...)]` - Adds getter method to a struct field
@@ -374,6 +376,32 @@ Adds some useful type reflection macros
         }
     }
     ```
+#### Constructor parameters
+- `name` - specify a custom name for the constructor
+- `visibility` - speciry a custom visibility modifier for the constructor
+
+Possible visibilities (must be specified as string literals): 
+- `"pub"` - public visibility
+- `"pub(path)"` - restricted public visibility (e.g. "pub(crate)", "pub(super)", "pub(in some::module)")
+- `"private"` - private visibility (not actually a Rust keyword, but used here for convenience)
+
+    For example:
+    ```rust
+    #[derive(trl)]
+    #[constructor(name = new_user, visibility="pub(crate)")]
+    struct User {
+        id: u32,
+        name: String,
+    }
+    ```
+    Would generate:
+    ```rust
+    impl User {
+        pub(crate) fn new_user(id: u32, name: String) -> Self {
+            Self { id, name }
+        }
+    }
+```
 
 ## TODO
 - Visibility parameters:

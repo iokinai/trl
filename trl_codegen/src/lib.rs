@@ -3,7 +3,7 @@
 //! This library provides auto generation of some common methods based on Rust macros
 //!
 //! All future examples will use this test struct:
-//! ```
+//! ```rust,ignore
 //! struct User {
 //!     id: u32,
 //!     name: String,
@@ -30,7 +30,7 @@
 //! ###
 //! - include=\[...\] - generate getter/setters only for the listed fields.
 //! For example:
-//! ```
+//! ```rust,ignore
 //! #[derive(trl)]
 //! #[getters(include=[name, email])]
 //! #[setters(include=[name, email])]
@@ -42,7 +42,7 @@
 //! - exclude=\[...\] - generate getters/setters for all fields except the listed.
 //! For example
 //!
-//! ```
+//! ```rust,ignore
 //! #[derive(trl)]
 //! #[getters(exclude=[a, b])]
 //! #[setters(exclude=[a, b])]
@@ -56,7 +56,7 @@
 //!
 //! - prefix=... - generates getters/setters with specified prefix.
 //! For example
-//! ```
+//! ```rust,ignore
 //! #[derive(trl)]
 //! #[getters(prefix=get_)]
 //! #[setters(prefix=set_)]
@@ -75,14 +75,12 @@
 //! - name = ... - generate a getter/setter with the specified name
 //! - prefix = ... - generate a getter/setter with the specified prefix
 
-mod arg;
+mod accessors;
 mod attribute_parser;
-mod attribute_processors;
-mod field_attrs;
+mod constructor;
 mod helpers;
 mod modifier;
 mod new_from_args;
-mod struct_attrs;
 
 use attribute_parser::generate_impl_for_struct;
 use syn::{ItemStruct, parse_macro_input};
@@ -109,7 +107,7 @@ pub fn trl_derive(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 /// ### Common arguments
 /// - include=\[...\] - generate getter/setters only for the listed fields.
 /// For example:
-/// ```
+/// ```rust,ignore
 /// #[derive(trl)]
 /// #[getters(include=[name, email])]
 /// #[setters(include=[name, email])]
@@ -121,7 +119,7 @@ pub fn trl_derive(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 /// - exclude=\[...\] - generate getters/setters for all fields except the listed.
 /// For example
 ///
-/// ```
+/// ```rust,ignore
 /// #[derive(trl)]
 /// #[getters(exclude=[a, b])]
 /// #[setters(exclude=[a, b])]
@@ -135,7 +133,7 @@ pub fn trl_derive(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 ///
 /// - prefix=... - generates getters/setters with specified prefix.
 /// For example
-/// ```
+/// ```rust,ignore
 /// #[derive(trl)]
 /// #[getters(prefix=get_)]
 /// #[setters(prefix=set_)]
@@ -152,7 +150,7 @@ pub fn trl_derive(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 /// - ref / mut ref / move - specify the self modifier
 ///
 /// For example:
-/// ```
+/// ```,rust,ignore
 /// #[derive(trl)]
 /// #[getters(mut ref)]
 /// struct Test { /* ... */ }
@@ -171,7 +169,7 @@ pub fn getters(
 /// /// ### Common arguments
 /// - include=\[...\] - generate getter/setters only for the listed fields.
 /// For example:
-/// ```
+/// ```rust,ignore
 /// #[derive(trl)]
 /// #[getters(include=[name, email])]
 /// #[setters(include=[name, email])]
@@ -183,7 +181,7 @@ pub fn getters(
 /// - exclude=\[...\] - generate getters/setters for all fields except the listed.
 /// For example
 ///
-/// ```
+/// ```rust,ignore
 /// #[derive(trl)]
 /// #[getters(exclude=[a, b])]
 /// #[setters(exclude=[a, b])]
@@ -197,7 +195,7 @@ pub fn getters(
 ///
 /// - prefix=... - generates getters/setters with specified prefix.
 /// For example
-/// ```
+/// ```rust,ignore
 /// #[derive(trl)]
 /// #[getters(prefix=get_)]
 /// #[setters(prefix=set_)]
@@ -214,7 +212,7 @@ pub fn getters(
 /// - ref / mut ref / move - specify the self modifier
 ///
 /// For example:
-/// ```
+/// ```rust,ignore
 /// #[derive(trl)]
 /// #[getters(mut ref)]
 /// struct Test { /* ... */ }
@@ -223,6 +221,40 @@ pub fn getters(
 ///
 #[proc_macro_attribute]
 pub fn setters(
+    _: proc_macro::TokenStream,
+    item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    item
+}
+
+/// Generate default constructor for a struct
+/// ### Common arguments
+/// - name=... - generate a constructor with specified name.
+/// Default name is `new`
+/// For example:
+/// ```rust,ignore
+/// #[derive(trl)]
+/// #[constructor(name = new_test)]
+/// struct Test {/* ... */}
+/// ```
+///
+/// Would generate constructor with name `new_test`.
+///
+/// - visibility=... - generate a constructor with specified visibility modifier
+///
+/// Possible modifiers are `pub``, `pub(path)` and `private`
+/// For example
+///
+/// ```rust,ignore
+/// #[derive(trl)]
+/// #[constructor(visibility = pub(crate))]
+/// struct Test { /* ... */ }
+/// ```
+///
+/// Would generate constructor with `pub(crate)` visibility specifier.
+///
+#[proc_macro_attribute]
+pub fn constructor(
     _: proc_macro::TokenStream,
     item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {

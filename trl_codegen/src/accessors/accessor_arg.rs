@@ -1,5 +1,5 @@
-//! # arg
-//! This module contains the `Arg` enum which represents a single argument of an attribute
+//! # accessor_arg
+//! This module contains the `AccessorArg` enum which represents a single argument of an attribute
 //!
 
 use crate::modifier::Modifier;
@@ -7,8 +7,8 @@ use syn::parse::{Parse, ParseStream};
 use syn::spanned::Spanned;
 use syn::{Error, Expr, ExprArray, MetaNameValue, Result, Token};
 
-/// Struct Arg represents a single argument of an attribute
-pub enum Arg {
+/// Enum AccessorArg represents a single argument of an accessor attribute
+pub enum AccessorArg {
     /// Fields to include
     Includes(Vec<String>),
     /// Fields to exclude
@@ -23,22 +23,28 @@ pub enum Arg {
     Name(String),
 }
 
-impl Arg {
+impl AccessorArg {
     /// If the parsed value is MetaNameValue, this means its the construction like: name = value.
     /// This method parses this construction into an `Arg`
     pub fn nv_to_arg(nv: &MetaNameValue) -> Result<Self> {
-        match &nv
+        match nv
             .path
             .get_ident()
             .expect("Wrong name. Expected identifier")
             .to_string()
             .as_str()
         {
-            &"includes" => Ok(Arg::Includes(Arg::brackets_to_vec(&nv.value)?)),
-            &"excludes" => Ok(Arg::Excludes(Arg::brackets_to_vec(&nv.value)?)),
-            &"prefix" => Ok(Arg::Prefix(Arg::ident_to_string(&nv.value)?)),
-            &"name" => Ok(Arg::Name(Arg::ident_to_string(&nv.value)?)),
-            &_ => Result::Err(Error::new(nv.span(), "Unknown arg name")),
+            "includes" => Ok(AccessorArg::Includes(AccessorArg::brackets_to_vec(
+                &nv.value,
+            )?)),
+            "excludes" => Ok(AccessorArg::Excludes(AccessorArg::brackets_to_vec(
+                &nv.value,
+            )?)),
+            "prefix" => Ok(AccessorArg::Prefix(AccessorArg::ident_to_string(
+                &nv.value,
+            )?)),
+            "name" => Ok(AccessorArg::Name(AccessorArg::ident_to_string(&nv.value)?)),
+            _ => Result::Err(Error::new(nv.span(), "Unknown arg name")),
         }
     }
 
@@ -81,15 +87,15 @@ impl Arg {
     }
 }
 
-impl Parse for Arg {
+impl Parse for AccessorArg {
     fn parse(input: ParseStream) -> Result<Self> {
         let arg = if let Ok(modifier) = input.parse::<Modifier>() {
-            Arg::Modifier(modifier)
+            AccessorArg::Modifier(modifier)
         } else if input.peek(Token![pub]) {
             input.parse::<Token![pub]>()?;
-            Arg::Pub
+            AccessorArg::Pub
         } else if let Ok(nv) = input.parse::<MetaNameValue>() {
-            Arg::nv_to_arg(&nv)?
+            AccessorArg::nv_to_arg(&nv)?
         } else {
             return Result::Err(Error::new(input.span(), "Could not parse arg"));
         };

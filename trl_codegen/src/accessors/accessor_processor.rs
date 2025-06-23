@@ -1,4 +1,4 @@
-//! # attributes_processor
+//! # accessor_processor
 //! This module contains functions that generate method from the provided information
 
 use proc_macro2::TokenStream;
@@ -6,13 +6,13 @@ use quote::format_ident;
 use syn::{Field, ItemStruct};
 
 use crate::{
-    field_attrs::FieldAttrs,
+    accessors::AccessorFieldAttrs,
+    accessors::AccessorStructAttrs,
     helpers::{fill_includes_if_empty, generate_getter, generate_setter, should_field_be_added},
-    struct_attrs::StructAttrs,
 };
 
-/// Generates `getters` `TokenStream` based on the provided `StructAttrs`
-pub fn process_getters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStream {
+/// Generates `getters` `TokenStream` based on the provided `AccessorStructAttrs`
+pub fn process_getters(mut attrs: AccessorStructAttrs, input: &ItemStruct) -> TokenStream {
     fill_includes_if_empty(&mut attrs.includes, &input.fields);
 
     let mut result = TokenStream::new();
@@ -28,8 +28,8 @@ pub fn process_getters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStrea
     result
 }
 
-/// Generates `setters` `TokenStream` based on the provided `StructAttrs`
-pub fn process_setters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStream {
+/// Generates `setters` `TokenStream` based on the provided `AccessorStructAttrs`
+pub fn process_setters(mut attrs: AccessorStructAttrs, input: &ItemStruct) -> TokenStream {
     fill_includes_if_empty(&mut attrs.includes, &input.fields);
 
     if attrs.prefix.is_empty() {
@@ -49,8 +49,8 @@ pub fn process_setters(mut attrs: StructAttrs, input: &ItemStruct) -> TokenStrea
     result
 }
 
-/// Generates `get` `TokenStream` based on the provided `FieldAttrs`
-pub fn process_get(attrs: FieldAttrs, field: &Field) -> TokenStream {
+/// Generates `get` `TokenStream` based on the provided `AccessorFieldAttrs`
+pub fn process_get(attrs: AccessorFieldAttrs, field: &Field) -> TokenStream {
     let fin = &field.ident.clone().unwrap();
     let ty = &field.ty;
 
@@ -69,8 +69,8 @@ pub fn process_get(attrs: FieldAttrs, field: &Field) -> TokenStream {
     generate_getter(&getter_name, &modifier, &fin, ty)
 }
 
-/// Generates `set` `TokenStream` based on the provided `FieldAttrs`
-pub fn process_set(mut attrs: FieldAttrs, field: &Field) -> TokenStream {
+/// Generates `set` `TokenStream` based on the provided `AccessorFieldAttrs`
+pub fn process_set(mut attrs: AccessorFieldAttrs, field: &Field) -> TokenStream {
     let fin = &field.ident.clone().unwrap();
     let ty = &field.ty;
 

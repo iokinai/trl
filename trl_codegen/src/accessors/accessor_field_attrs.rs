@@ -3,13 +3,13 @@
 //! This module contains the `FieldAttrs` struct, which holds information about a field
 //! for which a method is going to be generated.
 
-use syn::{punctuated::Punctuated, Token};
+use syn::{Token, punctuated::Punctuated};
 
-use crate::{arg::Arg, modifier::Modifier, new_from_args::NewFromArgs};
+use crate::{accessors::AccessorArg, modifier::Modifier, new_from_args::NewFromArgs};
 
 /// Information about field for which a method is going to be generated
 #[derive(Debug)]
-pub struct FieldAttrs {
+pub struct AccessorFieldAttrs {
     /// Method prefix
     pub prefix: String,
     /// Method name
@@ -18,9 +18,9 @@ pub struct FieldAttrs {
     pub modifier: Modifier,
 }
 
-impl FieldAttrs {
-    pub fn from_values(prefix: String, name: String, modifier: Modifier) -> FieldAttrs {
-        FieldAttrs {
+impl AccessorFieldAttrs {
+    pub fn from_values(prefix: String, name: String, modifier: Modifier) -> AccessorFieldAttrs {
+        AccessorFieldAttrs {
             prefix,
             name,
             modifier,
@@ -28,22 +28,22 @@ impl FieldAttrs {
     }
 }
 
-impl NewFromArgs for FieldAttrs {
-    fn new(args: Punctuated<Arg, Token![,]>) -> FieldAttrs {
+impl NewFromArgs<AccessorArg> for AccessorFieldAttrs {
+    fn new(args: Punctuated<AccessorArg, Token![,]>) -> AccessorFieldAttrs {
         let mut prefix = String::new();
         let mut name = String::new();
         let mut modifier = Modifier::Ref;
 
         for arg in args {
             match arg {
-                Arg::Prefix(p) => prefix = p,
-                Arg::Name(n) => name = n,
-                Arg::Modifier(m) => modifier = m,
+                AccessorArg::Prefix(p) => prefix = p,
+                AccessorArg::Name(n) => name = n,
+                AccessorArg::Modifier(m) => modifier = m,
                 _ => {}
             }
         }
 
-        FieldAttrs {
+        AccessorFieldAttrs {
             prefix,
             name,
             modifier,

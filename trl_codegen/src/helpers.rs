@@ -6,7 +6,7 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{Field, Fields, Ident, Type, Visibility};
 
-use crate::struct_attrs::StructAttrs;
+use crate::accessors::AccessorStructAttrs;
 
 pub fn fill_includes_if_empty(includes: &mut Vec<String>, fields: &Fields) {
     if !includes.is_empty() {
@@ -18,7 +18,7 @@ pub fn fill_includes_if_empty(includes: &mut Vec<String>, fields: &Fields) {
     }
 }
 
-pub fn should_add_pub(attrs: &StructAttrs, field: &Field) -> bool {
+pub fn should_add_pub(attrs: &AccessorStructAttrs, field: &Field) -> bool {
     if !attrs.include_pub {
         if let Visibility::Public(..) = field.vis {
             return false;
@@ -29,7 +29,7 @@ pub fn should_add_pub(attrs: &StructAttrs, field: &Field) -> bool {
 }
 
 /// Checks whether the field should be included based on the `includes` and `excludes` arguments
-pub fn should_include(attrs: &StructAttrs, field: &Field) -> bool {
+pub fn should_include(attrs: &AccessorStructAttrs, field: &Field) -> bool {
     if !attrs
         .includes
         .contains(&field.ident.clone().unwrap().to_string())
@@ -44,7 +44,7 @@ pub fn should_include(attrs: &StructAttrs, field: &Field) -> bool {
 }
 
 /// Checks whether the field should be included based on the `StructAttrs` struct
-pub fn should_field_be_added(attrs: &StructAttrs, field: &Field) -> bool {
+pub fn should_field_be_added(attrs: &AccessorStructAttrs, field: &Field) -> bool {
     should_add_pub(&attrs, &field) && should_include(&attrs, &field)
 }
 
