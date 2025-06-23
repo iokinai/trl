@@ -14,4 +14,4 @@ keywords = ["macro", "attribute", "codegen"]
 categories = ["development-tools::procedural-macro-helpers"]
 
 [dependencies]
-trl_codegen = { path = "../trl_codegen"}
+trl_codegen = { path = "../trl_codegen", version = "*"}

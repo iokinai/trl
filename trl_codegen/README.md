@@ -1,0 +1,1 @@
+This crate is intended as an internal codegen helper for trl and is not meant to be used directly
