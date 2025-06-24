@@ -378,7 +378,7 @@ Adds some useful type reflection macros
     ```
 #### Constructor parameters
 - `name` - specify a custom name for the constructor
-- `visibility` - speciry a custom visibility modifier for the constructor
+- `visibility` - specify a custom visibility modifier for the constructor
 
 Possible visibilities (must be specified as string literals): 
 - `"pub"` - public visibility

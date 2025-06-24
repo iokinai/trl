@@ -33,7 +33,7 @@ dependencies = [
 
 [[package]]
 name = "trl"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "trl_codegen 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

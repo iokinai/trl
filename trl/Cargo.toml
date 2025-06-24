@@ -1,6 +1,6 @@
 [package]
 name = "trl"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2024"
 authors = ["Maxim Okinawa <okinaijap@gmail.com>"]
 description = "This library provides auto generation of some common methods based on Rust macros"

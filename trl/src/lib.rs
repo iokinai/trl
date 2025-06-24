@@ -1,3 +1,131 @@
+//! # TRL - type reflection library
+//!
+//! This library provides auto generation of some common methods based on Rust macros
+//!
+//! All future examples will use this test struct:
+//! ```rust,ignore
+//! struct User {
+//!     id: u32,
+//!     name: String,
+//!     email: String,
+//!
+//!     // public fields are ignored by default
+//!     pub phone_number: u64,
+//!}
+//! ```
+//!
+//! This library contains 2 types of macros:
+//! - Struct level - macros applied to a struct
+//! - Field level - macros applied to a single field
+//!
+//! Both of them have addictional arguments
+//!
+//! ### Struct level macros
+//! Struct level macros are: `getters` and `setters`. They generates getters/setters for all the fields of the struct
+//! They have common arguments:
+//! - include=[...]
+//! - exclude=[...]
+//! - pub
+//! - prefix=...
+//! ###
+//! - include=\[...\] - generate getter/setters only for the listed fields.
+//! For example:
+//! ```rust,ignore
+//! #[derive(trl)]
+//! #[getters(include=[name, email])]
+//! #[setters(include=[name, email])]
+//! struct Test {/* ... */}
+//! ```
+//!
+//! Would generate getters/setters for `b` and `c` fields.
+//!
+//! - exclude=\[...\] - generate getters/setters for all fields except the listed.
+//! For example
+//!
+//! ```rust,ignore
+//! #[derive(trl)]
+//! #[getters(exclude=[a, b])]
+//! #[setters(exclude=[a, b])]
+//! struct Test { /* ... */ }
+//! ```
+//!
+//! Would generate getters/setters only for the `c` field.
+//!
+//! - pub - include public fields.
+//! By default public fields are ignored, but you can specify the `pub` argument to generate getters/setters for them too
+//!
+//! - prefix=... - generates getters/setters with specified prefix.
+//! For example
+//! ```rust,ignore
+//! #[derive(trl)]
+//! #[getters(prefix=get_)]
+//! #[setters(prefix=set_)]
+//! struct Test { /* ... */ }
+//! ```
+//! Would generate getters:
+//! - `get_id()`, `get_name()`
+//! and setters:
+//! - `set_id()`, `set_name()`
+//!
+//! Default value for getters is empty string, and for setters is `set_`
+//!
+//! ### Field level macros
+//! Field level macros are `get` and `set`. They generates a getter/setter for a single field.
+//! They have common arguments:
+//! - name = ... - generate a getter/setter with the specified name
+//! - prefix = ... - generate a getter/setter with the specified prefix
+//!
+//! ### Constructor
+//! Constructor is a struct-level macro which generates the default constructor:
+//!
+//! ```rust,ignore
+//! #[derive(trl)]
+//! #[constructor]
+//! struct Test {/* ... */}
+//! ```
+//!
+//! Would genetate:
+//! ```rust,ignore
+//! pub fn new(id: u32, name: String, email: String, phone_number: u64) -> Self {
+//!     Self {
+//!         id,
+//!         name,
+//!         email,
+//!         phone_number,
+//!     }
+//! }
+//! ```
+//!
+//! - name - generate constructor with specified name
+//! - visibility - generate constructor with specified visibility modifier
+//!
+//! Possible visibilities (must be specified as string literals)
+//! - `"pub"` - public visibility
+//! - `"pub(path)"` - restricted public visibility (e.g. "pub(crate)", "pub(super)", "pub(in some::module)")
+//! - `"private"` - private visibility (not actually a Rust keyword, but used here for convenience)
+//!
+//! For example this:
+//!
+//! ```rust,ignore
+//! #[derive(trl)]
+//! #[constructor(name = new_test, visibility = "pub(crate)")]
+//! struct Test { /* ... */ }
+//! ```
+//!
+//! Would generate:
+//!
+//! ```rust,ignore
+//! pub(crate) fn new_test(id: u32, name: String, email: String, phone_number: u64) -> Self {
+//!     Self {
+//!         id,
+//!         name,
+//!         email,
+//!         phone_number,
+//!     }
+//! }
+//! ```
+//!
+
 pub use trl_codegen::*;
 
 pub mod prelude {
