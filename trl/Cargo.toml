@@ -1,6 +1,6 @@
 [package]
 name = "trl"
-version = "1.1.1"
+version = "1.1.2"
 edition = "2024"
 authors = ["Maxim Okinawa <okinaijap@gmail.com>"]
 description = "This library provides auto generation of some common methods based on Rust macros"
@@ -14,4 +14,4 @@ keywords = ["macro", "attribute", "codegen"]
 categories = ["development-tools::procedural-macro-helpers"]
 
 [dependencies]
-trl_codegen = { version = "1.1.0"}
+trl_codegen = { version = "1.1.1"}

@@ -37,19 +37,19 @@
 //! struct Test {/* ... */}
 //! ```
 //!
-//! Would generate getters/setters for `b` and `c` fields.
+//! Would generate getters/setters for `name` and `email` fields.
 //!
 //! - exclude=\[...\] - generate getters/setters for all fields except the listed.
 //! For example
 //!
 //! ```rust,ignore
 //! #[derive(trl)]
-//! #[getters(exclude=[a, b])]
-//! #[setters(exclude=[a, b])]
+//! #[getters(exclude=[name, email])]
+//! #[setters(exclude=[name, email])]
 //! struct Test { /* ... */ }
 //! ```
 //!
-//! Would generate getters/setters only for the `c` field.
+//! Would generate getters/setters only for the `id` field.
 //!
 //! - pub - include public fields.
 //! By default public fields are ignored, but you can specify the `pub` argument to generate getters/setters for them too
@@ -63,9 +63,9 @@
 //! struct Test { /* ... */ }
 //! ```
 //! Would generate getters:
-//! - `get_id()`, `get_name()`
+//! - `get_id()`, `get_name()`, `get_email()`
 //! and setters:
-//! - `set_id()`, `set_name()`
+//! - `set_id()`, `set_name()`, `set_email()`
 //!
 //! Default value for getters is empty string, and for setters is `set_`
 //!
@@ -114,19 +114,19 @@ pub fn trl_derive(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 /// struct Test {/* ... */}
 /// ```
 ///
-/// Would generate getters/setters for `b` and `c` fields.
+/// Would generate getters/setters for `name` and `email` fields.
 ///
 /// - exclude=\[...\] - generate getters/setters for all fields except the listed.
 /// For example
 ///
 /// ```rust,ignore
 /// #[derive(trl)]
-/// #[getters(exclude=[a, b])]
-/// #[setters(exclude=[a, b])]
+/// #[getters(exclude=[name, email])]
+/// #[setters(exclude=[name, email])]
 /// struct Test { /* ... */ }
 /// ```
 ///
-/// Would generate getters/setters only for the `c` field.
+/// Would generate getters/setters only for the `id` field.
 ///
 /// - pub - include public fields.
 /// By default public fields are ignored, but you can specify the `pub` argument to generate getters/setters for them too
@@ -140,9 +140,9 @@ pub fn trl_derive(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 /// struct Test { /* ... */ }
 /// ```
 /// Would generate getters:
-/// - `get_id()`, `get_name()`
+/// - `get_id()`, `get_name()`, `get_email()`
 /// and setters:
-/// - `set_id()`, `set_name()`
+/// - `set_id()`, `set_name()`, `set_email()`
 ///
 /// Default value for getters is empty string, and for setters is `set_`
 ///
@@ -166,7 +166,7 @@ pub fn getters(
 }
 
 /// Generate setters for a struct fields
-/// /// ### Common arguments
+/// ### Common arguments
 /// - include=\[...\] - generate getter/setters only for the listed fields.
 /// For example:
 /// ```rust,ignore
@@ -176,19 +176,19 @@ pub fn getters(
 /// struct Test {/* ... */}
 /// ```
 ///
-/// Would generate getters/setters for `b` and `c` fields.
+/// Would generate getters/setters for `name` and `email` fields.
 ///
 /// - exclude=\[...\] - generate getters/setters for all fields except the listed.
 /// For example
 ///
 /// ```rust,ignore
 /// #[derive(trl)]
-/// #[getters(exclude=[a, b])]
-/// #[setters(exclude=[a, b])]
+/// #[getters(exclude=[name, email])]
+/// #[setters(exclude=[name, email])]
 /// struct Test { /* ... */ }
 /// ```
 ///
-/// Would generate getters/setters only for the `c` field.
+/// Would generate getters/setters only for the `id` field.
 ///
 /// - pub - include public fields.
 /// By default public fields are ignored, but you can specify the `pub` argument to generate getters/setters for them too
@@ -202,9 +202,9 @@ pub fn getters(
 /// struct Test { /* ... */ }
 /// ```
 /// Would generate getters:
-/// - `get_id()`, `get_name()`
+/// - `get_id()`, `get_name()`, `get_email()`
 /// and setters:
-/// - `set_id()`, `set_name()`
+/// - `set_id()`, `set_name()`, `set_email()`
 ///
 /// Default value for getters is empty string, and for setters is `set_`
 ///
@@ -242,7 +242,7 @@ pub fn setters(
 ///
 /// - visibility=... - generate a constructor with specified visibility modifier
 ///
-/// Possible modifiers are `pub``, `pub(path)` and `private`
+/// Possible modifiers are `pub`, `pub(path)` and `private`
 /// For example
 ///
 /// ```rust,ignore
